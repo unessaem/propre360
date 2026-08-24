@@ -1,0 +1,38 @@
+╔══════════════════════════════════════════════════════════════╗
+║   PROPRE 360 — OÙ METTRE VOS PHOTOS                           ║
+╚══════════════════════════════════════════════════════════════╝
+
+Déposez vos photos DANS CE DOSSIER en respectant EXACTEMENT
+les noms ci-dessous. Aucune modification du code n'est nécessaire :
+dès que le fichier existe, la photo remplace l'emplacement gris.
+
+  hero.jpg                  → grande image en haut de page
+  grand-menage.jpg          → Grand ménage
+  nettoyage-regulier.jpg    → Nettoyage régulier
+  fin-de-chantier.jpg       → Nettoyage fin de chantier
+  sols.jpg                  → Nettoyage & traitement des sols
+  vitres.jpg                → Nettoyage des vitres
+  canapes-matelas.jpg       → Nettoyage canapés & matelas
+  tapis.jpg                 → Lavage professionnel de tapis
+  cuivre-inox.jpg           → Traitement cuivre, inox & aluminium
+  lavage-voiture.jpg        → Lavage professionnel de voitures
+  nuisibles.jpg             → Lutte contre insectes & nuisibles
+
+────────────────────────────────────────────────────────────────
+FORMAT CONSEILLÉ
+────────────────────────────────────────────────────────────────
+  • Cartes services : 1200 × 800 px (format 3:2), JPG ou WebP
+  • Image hero      : 1200 × 1500 px (format 4:5), JPG ou WebP
+  • Poids           : moins de 300 Ko par image (compressez sur
+                      squoosh.app ou tinypng.com)
+
+────────────────────────────────────────────────────────────────
+CHANGER UNE EXTENSION (.png, .webp au lieu de .jpg)
+────────────────────────────────────────────────────────────────
+Ouvrez  src/data/services.js  et modifiez le champ "image"
+du service concerné. Exemple :
+
+    image: '/images/services/tapis.webp',
+
+Pour l'image hero, modifiez  src/components/Hero.jsx  (ligne
+contenant "/images/services/hero.jpg").
