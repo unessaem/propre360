@@ -6,17 +6,17 @@ export default function Zone() {
   return (
     <section
       id="zone"
-      className="relative scroll-mt-24 border-y border-white/10 bg-navy-900/40 py-20 lg:py-28"
+      className="relative scroll-mt-24 border-y border-edge/10 bg-band py-20 lg:py-28"
     >
       <div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-2 lg:items-center lg:px-8">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-400">
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">
             Zone d’intervention
           </span>
-          <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
             {company.area}
           </h2>
-          <p className="mt-4 max-w-lg text-base leading-relaxed text-slate-400">
+          <p className="mt-4 max-w-lg text-base leading-relaxed text-muted">
             Nous nous déplaçons dans tout {company.city} et sa périphérie, avec
             notre matériel et nos produits. Votre quartier n’est pas dans la
             liste ? Écrivez-nous, nous vous dirons tout de suite si nous pouvons
@@ -38,9 +38,9 @@ export default function Zone() {
           {neighborhoods.map((n) => (
             <span
               key={n}
-              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-navy-950/60 px-4 py-2.5 text-sm text-slate-300"
+              className="inline-flex items-center gap-2 rounded-xl border border-edge/10 bg-page/60 px-4 py-2.5 text-sm text-body"
             >
-              <Icon name="pin" className="h-3.5 w-3.5 text-teal-400" />
+              <Icon name="pin" className="h-3.5 w-3.5 text-brand" />
               {n}
             </span>
           ))}

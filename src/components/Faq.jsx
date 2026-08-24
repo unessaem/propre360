@@ -31,18 +31,18 @@ const faqs = [
 
 function Item({ faq, open, onToggle }) {
   return (
-    <div className="border-b border-white/10">
+    <div className="border-b border-edge/10">
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={open}
         className="flex w-full items-center justify-between gap-6 py-5 text-left"
       >
-        <span className="font-display text-base font-semibold text-white">
+        <span className="font-display text-base font-semibold text-ink">
           {faq.q}
         </span>
         <span
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/15 text-teal-400 transition-transform duration-300 ${
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-edge/15 text-brand transition-transform duration-300 ${
             open ? 'rotate-45' : ''
           }`}
         >
@@ -55,7 +55,7 @@ function Item({ faq, open, onToggle }) {
         }`}
       >
         <div className="overflow-hidden">
-          <p className="max-w-3xl pr-12 text-sm leading-relaxed text-slate-400">
+          <p className="max-w-3xl pr-12 text-sm leading-relaxed text-muted">
             {faq.a}
           </p>
         </div>
@@ -68,12 +68,12 @@ export default function Faq() {
   const [openIndex, setOpenIndex] = useState(0)
 
   return (
-    <section className="border-t border-white/10 bg-navy-900/40 py-20 lg:py-28">
+    <section className="border-t border-edge/10 bg-band py-20 lg:py-28">
       <div className="mx-auto max-w-4xl px-5 lg:px-8">
-        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-400">
+        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">
           Questions fréquentes
         </span>
-        <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+        <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
           Tout ce qu’on nous demande
         </h2>
 

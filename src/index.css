@@ -4,17 +4,106 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════════════════════════════════
+   THÈMES — tout se joue ici.
+   Le thème sombre est la valeur par défaut (:root).
+   Le thème clair s'active quand <html> porte la classe .light.
+   Aucune couleur n'est écrite en dur dans les composants.
+   ═══════════════════════════════════════════════════════════════════ */
+
 @layer base {
+  :root {
+    color-scheme: dark;
+
+    --c-page: 5 12 28; /* #050c1c */
+    --c-card: 12 25 52;
+    --c-band: 8 17 38;
+    --c-edge: 255 255 255; /* bordures claires sur fond sombre */
+    --c-ink: 255 255 255;
+    --c-body: 203 213 225;
+    --c-muted: 148 163 184;
+    --c-faint: 100 116 139;
+    --c-brand: 62 201 221; /* turquoise clair, lisible sur le sombre */
+    --c-glow-a: 34 167 194;
+    --c-glow-b: 29 59 120;
+    --c-grad-end: 125 211 252; /* ciel clair */
+
+    --shadow-glow: 0 0 60px -15px rgba(34, 167, 194, 0.55);
+    --shadow-card: 0 20px 50px -20px rgba(0, 0, 0, 0.7);
+
+    /* Emplacements photo */
+    --slot-a: rgba(34, 167, 194, 0.28);
+    --slot-b: rgba(29, 59, 120, 0.5);
+    --slot-base: 10 21 46;
+    --slot-hatch: rgba(255, 255, 255, 0.05);
+  }
+
+  :root.light {
+    color-scheme: light;
+
+    --c-page: 246 249 252; /* blanc bleuté, jamais un blanc pur */
+    --c-card: 255 255 255;
+    --c-band: 238 243 249;
+    --c-edge: 15 32 67; /* bordures sombres sur fond clair */
+    --c-ink: 10 21 46;
+    --c-body: 45 62 88;
+    --c-muted: 84 101 126;
+    --c-faint: 113 128 154;
+    --c-brand: 13 118 140; /* turquoise assombri pour le contraste */
+    --c-glow-a: 62 201 221;
+    --c-glow-b: 173 199 236;
+    --c-grad-end: 23 132 156; /* turquoise profond */
+
+    --shadow-glow: 0 12px 32px -12px rgba(23, 132, 156, 0.45);
+    --shadow-card: 0 18px 40px -24px rgba(10, 21, 46, 0.28);
+
+    --slot-a: rgba(34, 167, 194, 0.16);
+    --slot-b: rgba(29, 59, 120, 0.14);
+    --slot-base: 226 236 245;
+    --slot-hatch: rgba(15, 32, 67, 0.05);
+  }
+
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    background-color: #050c1c;
+    background-color: rgb(var(--c-page));
+    transition: background-color 0.35s ease;
   }
 
   ::selection {
-    background: rgba(62, 201, 221, 0.3);
+    background: rgb(var(--c-brand) / 0.28);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Fond des emplacements photo, dans les deux thèmes */
+  .photo-slot {
+    background-color: rgb(var(--slot-base));
+    background-image:
+      radial-gradient(circle at 30% 20%, var(--slot-a), transparent 60%),
+      radial-gradient(circle at 80% 80%, var(--slot-b), transparent 55%);
+  }
+
+  .photo-slot-hatch {
+    background-image: repeating-linear-gradient(
+      135deg,
+      var(--slot-hatch) 0 1px,
+      transparent 1px 14px
+    );
   }
 }
 
@@ -23,12 +112,12 @@
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #050c1c;
+  background: rgb(var(--c-page));
 }
 ::-webkit-scrollbar-thumb {
-  background: #1d3b78;
+  background: rgb(var(--c-edge) / 0.25);
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #22a7c2;
+  background: rgb(var(--c-brand) / 0.8);
 }

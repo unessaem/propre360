@@ -16,9 +16,9 @@ const placeTypes = [
 ]
 
 const field =
-  'w-full rounded-xl border border-white/10 bg-navy-950/70 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none transition focus:border-teal-400/60 focus:ring-2 focus:ring-teal-400/20'
+  'w-full rounded-xl border border-edge/10 bg-page/70 px-4 py-3 text-sm text-ink placeholder:text-faint outline-none transition focus:border-brand/60 focus:ring-2 focus:ring-teal-400/20'
 
-const label = 'mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400'
+const label = 'mb-2 block text-xs font-semibold uppercase tracking-wider text-muted'
 
 export default function QuoteForm() {
   const [form, setForm] = useState({
@@ -48,18 +48,18 @@ export default function QuoteForm() {
   return (
     <section id="devis" className="relative scroll-mt-24 py-20 lg:py-28">
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-1/3 h-96 w-96 -translate-x-1/2 rounded-full bg-teal-500/10 blur-[120px]" />
+        <div className="absolute left-1/2 top-1/3 h-96 w-96 -translate-x-1/2 rounded-full bg-glowA/10 blur-[120px]" />
       </div>
 
       <div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
         <div>
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-400">
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">
             Devis gratuit
           </span>
-          <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
             Recevez votre prix en quelques minutes
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-slate-400">
+          <p className="mt-4 text-base leading-relaxed text-muted">
             Remplissez ce formulaire : rien n’est envoyé automatiquement. Votre
             navigateur ouvre WhatsApp avec un message complet déjà rédigé — vous
             n’avez plus qu’à appuyer sur « envoyer ».
@@ -72,22 +72,22 @@ export default function QuoteForm() {
               'Prix adapté à votre surface et à vos besoins',
               'Aucun compte à créer, aucune donnée stockée',
             ].map((t) => (
-              <li key={t} className="flex items-start gap-3 text-sm text-slate-300">
-                <Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-teal-400" />
+              <li key={t} className="flex items-start gap-3 text-sm text-body">
+                <Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
                 {t}
               </li>
             ))}
           </ul>
 
-          <div className="mt-8 rounded-2xl border border-white/10 bg-navy-900/60 p-5">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+          <div className="mt-8 rounded-2xl border border-edge/10 bg-card p-5">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted">
               Ou appelez-nous directement
             </p>
             <a
               href={`tel:${company.phoneHref}`}
-              className="mt-2 flex items-center gap-2.5 font-display text-xl font-extrabold text-white transition hover:text-teal-400"
+              className="mt-2 flex items-center gap-2.5 font-display text-xl font-extrabold text-ink transition hover:text-brand"
             >
-              <Icon name="phone" className="h-5 w-5 text-teal-400" />
+              <Icon name="phone" className="h-5 w-5 text-brand" />
               {company.phoneDisplay}
             </a>
           </div>
@@ -95,7 +95,7 @@ export default function QuoteForm() {
 
         <form
           onSubmit={handleSubmit}
-          className="rounded-3xl border border-white/10 bg-navy-900/60 p-6 shadow-card sm:p-8"
+          className="rounded-3xl border border-edge/10 bg-card p-6 shadow-card sm:p-8"
         >
           <div className="grid gap-5 sm:grid-cols-2">
             <div className="sm:col-span-2">
@@ -104,11 +104,11 @@ export default function QuoteForm() {
               </label>
               <select id="service" className={field} value={form.service} onChange={set('service')}>
                 {services.map((s) => (
-                  <option key={s.id} value={s.title} className="bg-navy-950">
+                  <option key={s.id} value={s.title} className="bg-page">
                     {s.title}
                   </option>
                 ))}
-                <option value="Plusieurs services / autre demande" className="bg-navy-950">
+                <option value="Plusieurs services / autre demande" className="bg-page">
                   Plusieurs services / autre demande
                 </option>
               </select>
@@ -120,7 +120,7 @@ export default function QuoteForm() {
               </label>
               <select id="placeType" className={field} value={form.placeType} onChange={set('placeType')}>
                 {placeTypes.map((p) => (
-                  <option key={p} value={p} className="bg-navy-950">
+                  <option key={p} value={p} className="bg-page">
                     {p}
                   </option>
                 ))}
@@ -210,13 +210,13 @@ export default function QuoteForm() {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-7 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-br from-teal-400 to-teal-600 px-6 py-4 text-base font-bold text-navy-950 shadow-glow transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-900"
+            className="mt-7 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-br from-teal-400 to-teal-600 px-6 py-4 text-base font-bold text-navy-950 shadow-glow transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-card"
           >
             <Icon name="whatsapp" className="h-5 w-5" />
             Envoyer ma demande sur WhatsApp
           </a>
 
-          <p className="mt-3 text-center text-xs text-slate-500">
+          <p className="mt-3 text-center text-xs text-faint">
             WhatsApp s’ouvre avec votre message pré-rempli. Vous gardez le
             contrôle avant l’envoi.
           </p>

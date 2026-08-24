@@ -18,9 +18,19 @@ npm run dev          # http://localhost:5173
 npm run build        # génère le dossier dist/
 ```
 
-Déposez le contenu de `dist/` chez votre hébergeur, ou connectez le dossier du
-projet à **Vercel** ou **Netlify** (détection automatique de Vite, aucune
-configuration nécessaire).
+Déposez le contenu de `dist/` chez votre hébergeur, ou connectez le dépôt GitHub
+à **Cloudflare Pages** (gratuit, bande passante illimitée, usage commercial
+autorisé) :
+
+| Réglage | Valeur |
+|---|---|
+| Framework preset | `Vite` |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Variable d'environnement | `NODE_VERSION = 22` (obligatoire : Vite 8 exige Node 20.19+) |
+
+⚠️ N'utilisez pas le plan gratuit de Vercel : il est réservé à un usage non
+commercial, ce qui exclut un site d'entreprise.
 
 Version en un seul fichier HTML (pratique pour un hébergement basique) :
 
@@ -64,7 +74,9 @@ du service dans `src/data/services.js`.
 
 | Ce que vous voulez changer | Fichier |
 |---|---|
-| Numéro WhatsApp, téléphone, ville, Instagram | `src/data/company.js` |
+| Numéro WhatsApp, téléphone, ville | `src/data/company.js` |
+| Réseaux sociaux (Instagram, Facebook, LinkedIn) | `src/data/company.js` → tableau `socials` |
+| Couleurs des thèmes clair et sombre | `src/index.css` → blocs `:root` et `:root.light` |
 | Quartiers de la zone d'intervention | `src/data/company.js` |
 | Les 10 services (titres, descriptions, puces) | `src/data/services.js` |
 | Arguments « Pourquoi PROPRE 360 » | `src/components/WhyUs.jsx` |
@@ -77,7 +89,35 @@ du service dans `src/data/services.js`.
 
 ---
 
-## 5. Comment fonctionne la demande de devis
+## 5. Mode jour / nuit
+
+Le bouton soleil-lune est dans l'en-tête, à gauche du numéro de téléphone.
+
+- Au premier passage, le site suit **les réglages de l'appareil du visiteur**.
+- Dès qu'il clique, son choix est retenu (`localStorage`) et prime sur le système.
+- Un script placé dans `index.html` applique le thème **avant le premier
+  affichage** : pas de flash blanc au chargement.
+
+Aucune couleur n'est écrite en dur dans les composants. Tout passe par des
+variables CSS définies dans `src/index.css` :
+
+```css
+:root        { /* thème sombre — valeur par défaut */ }
+:root.light  { /* thème clair */ }
+```
+
+Pour ajuster une teinte, modifiez la variable, jamais les classes. Les
+composants utilisent des noms sémantiques : `bg-page`, `bg-card`, `bg-band`,
+`border-edge/10`, `text-ink`, `text-body`, `text-muted`, `text-faint`,
+`text-brand`.
+
+Le turquoise de la marque est volontairement assombri en mode clair
+(`--c-brand`) pour rester lisible sur fond blanc. Contrastes mesurés :
+titres 17:1, texte courant 10:1, accent 5:1 — au-delà du seuil WCAG AA.
+
+---
+
+## 6. Comment fonctionne la demande de devis
 
 Aucun serveur, aucune base de données, aucune donnée stockée.
 
@@ -90,7 +130,7 @@ Dans les deux cas le client voit le message avant de l'envoyer.
 
 ---
 
-## 6. Structure
+## 7. Structure
 
 ```
 public/
@@ -100,10 +140,12 @@ src/
   data/company.js             coordonnées et zone
   data/services.js            les 10 services
   lib/whatsapp.js             construction des liens wa.me
+  lib/theme.js                mémorisation du thème clair / sombre
   components/                 sections de la page
+  components/ThemeToggle.jsx  bouton jour / nuit
 ```
 
-## 7. Référencement
+## 8. Référencement
 
 Le `<title>`, la meta description et les données structurées `LocalBusiness`
 sont dans `index.html`. Pensez à y remplacer `https://propre360.com/` si le

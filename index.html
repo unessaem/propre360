@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#050c1c" />
+    <meta name="theme-color" content="#050c1c" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f6f9fc" media="(prefers-color-scheme: light)" />
 
     <title>PROPRE 360 — Société de nettoyage professionnel à Marrakech</title>
     <meta
@@ -39,8 +40,28 @@
           "addressLocality": "Marrakech",
           "addressCountry": "MA"
         },
-        "sameAs": ["https://www.instagram.com/propre360/"]
+        "sameAs": [
+          "https://www.instagram.com/propre360/",
+          "https://www.facebook.com/Propre360/",
+          "https://www.linkedin.com/company/propre360/"
+        ]
       }
+    </script>
+  
+    <!-- Applique le thème avant le premier rendu : évite le flash blanc. -->
+    <script>
+      (function () {
+        try {
+          var v = localStorage.getItem('propre360-theme')
+          var light =
+            v === 'light' ||
+            (!v && window.matchMedia('(prefers-color-scheme: light)').matches)
+          if (light) {
+            document.documentElement.classList.add('light')
+            document.documentElement.style.colorScheme = 'light'
+          }
+        } catch (e) {}
+      })()
     </script>
   </head>
   <body>

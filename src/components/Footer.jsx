@@ -1,4 +1,4 @@
-import { company, audiences } from '../data/company'
+import { company, audiences, socials } from '../data/company'
 import { services } from '../data/services'
 import { generalQuote } from '../lib/whatsapp'
 import Icon from './Icons'
@@ -7,7 +7,7 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-white/10 bg-navy-950">
+    <footer className="border-t border-edge/10 bg-page">
       <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr_1fr]">
           <div>
@@ -20,15 +20,15 @@ export default function Footer() {
                 />
               </span>
               <span>
-                <span className="block font-display text-base font-extrabold text-white">
+                <span className="block font-display text-base font-extrabold text-ink">
                   {company.name}
                 </span>
-                <span className="block text-xs text-teal-400">
+                <span className="block text-xs text-brand">
                   {company.tagline}
                 </span>
               </span>
             </div>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-slate-400">
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted">
               Nettoyage professionnel à {company.city} : {audiences.join(', ').toLowerCase()}.
               Devis gratuit sur WhatsApp.
             </p>
@@ -43,20 +43,27 @@ export default function Footer() {
                 <Icon name="whatsapp" className="h-4 w-4" />
                 WhatsApp
               </a>
-              <a
-                href={company.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-sm font-medium text-slate-200 transition hover:border-white/35 hover:text-white"
-              >
-                <Icon name="instagram" className="h-4 w-4" />
-                Instagram
-              </a>
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-2.5">
+              {socials.map((s) => (
+                <a
+                  key={s.id}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${company.name} sur ${s.label}`}
+                  className="inline-flex items-center gap-2 rounded-xl border border-edge/15 px-4 py-2.5 text-sm font-medium text-body transition hover:border-brand/50 hover:text-brand"
+                >
+                  <Icon name={s.icon} className="h-4 w-4" />
+                  {s.label}
+                </a>
+              ))}
             </div>
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-faint">
               Nos services
             </h3>
             <ul className="mt-5 space-y-2.5">
@@ -64,7 +71,7 @@ export default function Footer() {
                 <li key={s.id}>
                   <a
                     href="#services"
-                    className="text-sm text-slate-400 transition hover:text-teal-400"
+                    className="text-sm text-muted transition hover:text-brand"
                   >
                     {s.title}
                   </a>
@@ -74,36 +81,36 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-faint">
               Contact
             </h3>
             <ul className="mt-5 space-y-4 text-sm">
               <li>
                 <a
                   href={`tel:${company.phoneHref}`}
-                  className="flex items-start gap-3 text-slate-300 transition hover:text-teal-400"
+                  className="flex items-start gap-3 text-body transition hover:text-brand"
                 >
-                  <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-teal-400" />
+                  <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
                   {company.phoneDisplay}
                 </a>
               </li>
-              <li className="flex items-start gap-3 text-slate-400">
-                <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-teal-400" />
+              <li className="flex items-start gap-3 text-muted">
+                <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
                 {company.area}
               </li>
-              <li className="flex items-start gap-3 text-slate-400">
-                <Icon name="clock" className="mt-0.5 h-4 w-4 shrink-0 text-teal-400" />
+              <li className="flex items-start gap-3 text-muted">
+                <Icon name="clock" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
                 Lundi – Samedi, sur rendez-vous
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-slate-500">
+        <div className="mt-14 flex flex-col gap-3 border-t border-edge/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-faint">
             © {year} {company.name} — {company.website}. Tous droits réservés.
           </p>
-          <p className="text-xs text-slate-500">{company.tagline}</p>
+          <p className="text-xs text-faint">{company.tagline}</p>
         </div>
       </div>
     </footer>

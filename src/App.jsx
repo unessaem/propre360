@@ -11,7 +11,7 @@ import WhatsAppFloat from './components/WhatsAppFloat'
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-navy-950 font-sans text-slate-200 antialiased">
+    <div className="min-h-screen bg-page font-sans text-body antialiased">
       <Header />
       <main>
         <Hero />
