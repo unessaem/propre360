@@ -16,7 +16,7 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const dist = path.join(root, 'dist')
@@ -26,7 +26,35 @@ const LANGS = ['fr', 'en', 'ar']
 const DIRS = { fr: 'ltr', en: 'ltr', ar: 'rtl' }
 const PATHS = { fr: '/', en: '/en/', ar: '/ar/' }
 
-const { render, languages: dicts } = await import(path.join(root, 'dist-ssr/entry-server.js'))
+/**
+ * Retrouve le bundle serveur quel que soit l'endroit où Vite l'a écrit.
+ * Selon les plugins actifs, il peut atterrir dans dist-ssr/entry-server.js
+ * ou dans dist-ssr/assets/entry-server-<hash>.js.
+ */
+function findSsrEntry(dir) {
+  if (!fs.existsSync(dir)) return null
+  for (const name of fs.readdirSync(dir)) {
+    const full = path.join(dir, name)
+    if (fs.statSync(full).isDirectory()) {
+      const found = findSsrEntry(full)
+      if (found) return found
+    } else if (/^entry-server(-[\w-]+)?\.(js|mjs)$/.test(name)) {
+      return full
+    }
+  }
+  return null
+}
+
+const ssrEntry = findSsrEntry(path.join(root, 'dist-ssr'))
+if (!ssrEntry) {
+  console.error(
+    '\n  Bundle serveur introuvable dans dist-ssr/.\n' +
+      "  L'étape « vite build --ssr » n'a produit aucun fichier entry-server.\n"
+  )
+  process.exit(1)
+}
+
+const { render, languages: dicts } = await import(pathToFileURL(ssrEntry).href)
 
 const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
 
@@ -207,4 +235,14 @@ Sitemap: ${SITE}/sitemap.xml
 `
 )
 
-console.log('  sitemap.xml et robots.txt générés')
+// Page 404 : reprend la version française, avec un message clair.
+const notFound = fs
+  .readFileSync(path.join(dist, 'index.html'), 'utf8')
+  .replace(/<title>[^<]*<\/title>/, '<title>Page introuvable | PROPRE 360</title>')
+  .replace(
+    '<meta name="robots" content="index, follow, max-image-preview:large">',
+    '<meta name="robots" content="noindex, follow">'
+  )
+fs.writeFileSync(path.join(dist, '404.html'), notFound)
+
+console.log('  sitemap.xml, robots.txt et 404.html générés')

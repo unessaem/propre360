@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Généré par npm run images / npm run build
+public/images/services/opt/
+dist-single

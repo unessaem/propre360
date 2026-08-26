@@ -32,7 +32,24 @@ autorisé) :
 
 Le build enchaîne quatre étapes : optimisation des photos, compilation,
 rendu serveur, puis génération des trois pages HTML (`/`, `/en/`, `/ar/`)
-avec leur sitemap et leur robots.txt.
+avec leur sitemap, leur robots.txt et une page 404.
+
+### Déploiement via Cloudflare Workers (`wrangler deploy`)
+
+Le fichier **`wrangler.jsonc` à la racine est obligatoire**. Sans lui,
+`wrangler deploy` lance une auto-configuration qui installe son propre plugin
+Vite, déplace la sortie du build, et fait échouer l'étape de pré-rendu avec :
+
+```
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '.../dist-ssr/entry-server.js'
+```
+
+Ne le supprimez pas. Si vous renommez le projet Cloudflare, mettez à jour le
+champ `name` en conséquence.
+
+> `not_found_handling` est volontairement réglé sur `404-page` et non sur
+> `single-page-application` : le site a de vraies pages séparées par langue,
+> pas une application monopage.
 
 ⚠️ N'utilisez pas le plan gratuit de Vercel : il est réservé à un usage non
 commercial, ce qui exclut un site d'entreprise.
