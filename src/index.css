@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&family=Cairo:wght@400;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -120,4 +120,39 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(var(--c-brand) / 0.8);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   ARABE — écriture de droite à gauche
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Police arabe dédiée : Cairo lit bien mieux que les polices latines. */
+:root[dir='rtl'] body,
+:root[dir='rtl'] .font-sans,
+:root[dir='rtl'] .font-display {
+  font-family: 'Cairo', 'Noto Sans Arabic', system-ui, sans-serif;
+}
+
+/* L'arabe n'a pas de majuscules, et l'interlettrage casse les ligatures :
+   on neutralise les deux sur toute la page en mode RTL. */
+:root[dir='rtl'] .uppercase {
+  text-transform: none;
+}
+:root[dir='rtl'] [class*='tracking-'] {
+  letter-spacing: normal;
+}
+
+/* L'arabe a besoin d'un peu plus d'air entre les lignes. */
+:root[dir='rtl'] p,
+:root[dir='rtl'] li {
+  line-height: 1.85;
+}
+
+/* Icônes directionnelles (flèches) : miroir en RTL. */
+.flip-rtl {
+  transition: transform 0.2s ease;
+}
+:root[dir='rtl'] .flip-rtl {
+  transform: scaleX(-1);
 }

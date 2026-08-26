@@ -1,29 +1,22 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { services } from '../data/services'
-import { neighborhoods, company } from '../data/company'
+import { company } from '../data/company'
 import { detailedQuote } from '../lib/whatsapp'
+import { useI18n } from '../i18n'
 import Icon from './Icons'
 
-const placeTypes = [
-  'Maison / Villa',
-  'Riad',
-  'Appartement',
-  'Bureau',
-  'Commerce',
-  'Hôtel / Maison d’hôtes',
-  'Chantier / Après travaux',
-  'Véhicule',
-]
-
 const field =
-  'w-full rounded-xl border border-edge/10 bg-page/70 px-4 py-3 text-sm text-ink placeholder:text-faint outline-none transition focus:border-brand/60 focus:ring-2 focus:ring-teal-400/20'
+  'w-full rounded-xl border border-edge/10 bg-page/70 px-4 py-3 text-sm text-ink placeholder:text-faint outline-none transition focus:border-brand/60 focus:ring-2 focus:ring-brand/20'
 
 const label = 'mb-2 block text-xs font-semibold uppercase tracking-wider text-muted'
 
 export default function QuoteForm() {
+  const { t, lang } = useI18n()
+  const linkRef = useRef(null)
+
   const [form, setForm] = useState({
-    service: services[0].title,
-    placeType: placeTypes[0],
+    service: '',
+    placeType: '',
     size: '',
     area: '',
     date: '',
@@ -31,13 +24,20 @@ export default function QuoteForm() {
     details: '',
   })
 
-  const linkRef = useRef(null)
+  // Les libellés changent avec la langue : on resynchronise les listes.
+  useEffect(() => {
+    setForm((f) => ({
+      ...f,
+      service: t.services.items[services[0].id].title,
+      placeType: t.quote.placeTypes[0],
+    }))
+  }, [lang, t])
+
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
   // Le lien WhatsApp est recalculé à chaque frappe : le bouton est un vrai
-  // lien <a>, jamais un window.open() (qui est bloqué par les navigateurs
-  // et dans les aperçus en iframe).
-  const href = detailedQuote(form)
+  // lien <a>, jamais un window.open() (bloqué par les navigateurs).
+  const href = detailedQuote(t, form)
 
   // Touche « Entrée » dans un champ → on déclenche le même lien.
   const handleSubmit = (e) => {
@@ -54,37 +54,29 @@ export default function QuoteForm() {
       <div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
         <div>
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">
-            Devis gratuit
+            {t.quote.eyebrow}
           </span>
           <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
-            Recevez votre prix en quelques minutes
+            {t.quote.title}
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-muted">
-            Remplissez ce formulaire : rien n’est envoyé automatiquement. Votre
-            navigateur ouvre WhatsApp avec un message complet déjà rédigé — vous
-            n’avez plus qu’à appuyer sur « envoyer ».
-          </p>
+          <p className="mt-4 text-base leading-relaxed text-muted">{t.quote.lead}</p>
 
           <ul className="mt-8 space-y-3">
-            {[
-              'Devis gratuit et sans engagement',
-              'Réponse rapide sur WhatsApp',
-              'Prix adapté à votre surface et à vos besoins',
-              'Aucun compte à créer, aucune donnée stockée',
-            ].map((t) => (
-              <li key={t} className="flex items-start gap-3 text-sm text-body">
+            {t.quote.bullets.map((b) => (
+              <li key={b} className="flex items-start gap-3 text-sm text-body">
                 <Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-                {t}
+                {b}
               </li>
             ))}
           </ul>
 
           <div className="mt-8 rounded-2xl border border-edge/10 bg-card p-5">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted">
-              Ou appelez-nous directement
+              {t.quote.callLabel}
             </p>
             <a
               href={`tel:${company.phoneHref}`}
+              dir="ltr"
               className="mt-2 flex items-center gap-2.5 font-display text-xl font-extrabold text-ink transition hover:text-brand"
             >
               <Icon name="phone" className="h-5 w-5 text-brand" />
@@ -100,26 +92,34 @@ export default function QuoteForm() {
           <div className="grid gap-5 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <label className={label} htmlFor="service">
-                Service souhaité
+                {t.quote.fields.service}
               </label>
               <select id="service" className={field} value={form.service} onChange={set('service')}>
-                {services.map((s) => (
-                  <option key={s.id} value={s.title} className="bg-page">
-                    {s.title}
-                  </option>
-                ))}
-                <option value="Plusieurs services / autre demande" className="bg-page">
-                  Plusieurs services / autre demande
+                {services.map((s) => {
+                  const title = t.services.items[s.id].title
+                  return (
+                    <option key={s.id} value={title} className="bg-page">
+                      {title}
+                    </option>
+                  )
+                })}
+                <option value={t.quote.otherService} className="bg-page">
+                  {t.quote.otherService}
                 </option>
               </select>
             </div>
 
             <div>
               <label className={label} htmlFor="placeType">
-                Type de lieu
+                {t.quote.fields.placeType}
               </label>
-              <select id="placeType" className={field} value={form.placeType} onChange={set('placeType')}>
-                {placeTypes.map((p) => (
+              <select
+                id="placeType"
+                className={field}
+                value={form.placeType}
+                onChange={set('placeType')}
+              >
+                {t.quote.placeTypes.map((p) => (
                   <option key={p} value={p} className="bg-page">
                     {p}
                   </option>
@@ -129,12 +129,12 @@ export default function QuoteForm() {
 
             <div>
               <label className={label} htmlFor="size">
-                Surface / nombre de pièces
+                {t.quote.fields.size}
               </label>
               <input
                 id="size"
                 className={field}
-                placeholder="ex. 120 m² ou 4 pièces"
+                placeholder={t.quote.fields.sizePlaceholder}
                 value={form.size}
                 onChange={set('size')}
               />
@@ -142,18 +142,18 @@ export default function QuoteForm() {
 
             <div>
               <label className={label} htmlFor="area">
-                Quartier
+                {t.quote.fields.area}
               </label>
               <input
                 id="area"
                 className={field}
                 list="quartiers"
-                placeholder="ex. Guéliz"
+                placeholder={t.quote.fields.areaPlaceholder}
                 value={form.area}
                 onChange={set('area')}
               />
               <datalist id="quartiers">
-                {neighborhoods.map((n) => (
+                {t.zone.neighborhoods.map((n) => (
                   <option key={n} value={n} />
                 ))}
               </datalist>
@@ -161,12 +161,13 @@ export default function QuoteForm() {
 
             <div>
               <label className={label} htmlFor="date">
-                Date souhaitée
+                {t.quote.fields.date}
               </label>
               <input
                 id="date"
                 type="date"
-                className={`${field} [color-scheme:dark]`}
+                dir="ltr"
+                className={field}
                 value={form.date}
                 onChange={set('date')}
               />
@@ -174,12 +175,12 @@ export default function QuoteForm() {
 
             <div className="sm:col-span-2">
               <label className={label} htmlFor="name">
-                Votre nom
+                {t.quote.fields.name}
               </label>
               <input
                 id="name"
                 className={field}
-                placeholder="Nom et prénom"
+                placeholder={t.quote.fields.namePlaceholder}
                 value={form.name}
                 onChange={set('name')}
               />
@@ -187,13 +188,13 @@ export default function QuoteForm() {
 
             <div className="sm:col-span-2">
               <label className={label} htmlFor="details">
-                Précisions (facultatif)
+                {t.quote.fields.details}
               </label>
               <textarea
                 id="details"
                 rows={3}
                 className={`${field} resize-none`}
-                placeholder="Étage, accès, type de sol, urgence…"
+                placeholder={t.quote.fields.detailsPlaceholder}
                 value={form.details}
                 onChange={set('details')}
               />
@@ -202,7 +203,7 @@ export default function QuoteForm() {
 
           {/* Permet la validation au clavier (touche Entrée) — invisible. */}
           <button type="submit" className="sr-only" tabIndex={-1} aria-hidden="true">
-            Envoyer
+            {t.quote.submitHidden}
           </button>
 
           <a
@@ -210,16 +211,13 @@ export default function QuoteForm() {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-7 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-br from-teal-400 to-teal-600 px-6 py-4 text-base font-bold text-navy-950 shadow-glow transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+            className="mt-7 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-br from-teal-400 to-teal-600 px-6 py-4 text-base font-bold text-navy-950 shadow-glow transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-card"
           >
             <Icon name="whatsapp" className="h-5 w-5" />
-            Envoyer ma demande sur WhatsApp
+            {t.quote.submit}
           </a>
 
-          <p className="mt-3 text-center text-xs text-faint">
-            WhatsApp s’ouvre avec votre message pré-rempli. Vous gardez le
-            contrôle avant l’envoi.
-          </p>
+          <p className="mt-3 text-center text-xs text-faint">{t.quote.note}</p>
         </form>
       </div>
     </section>

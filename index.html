@@ -10,9 +10,9 @@
     <title>PROPRE 360 — Société de nettoyage professionnel à Marrakech</title>
     <meta
       name="description"
-      content="PROPRE 360, nettoyage professionnel à Marrakech : grand ménage, nettoyage régulier, fin de chantier, sols, vitres, canapés, tapis, cuivre et inox, lavage auto, lutte contre les nuisibles. Devis gratuit sur WhatsApp."
+      content="PROPRE 360, nettoyage professionnel à Marrakech : grand ménage, nettoyage régulier, fin de chantier, sols, vitres, canapés, tapis, cuivre et inox, lutte contre les nuisibles. Site en français, anglais et arabe. Devis gratuit sur WhatsApp."
     />
-    <meta name="keywords" content="nettoyage Marrakech, société de nettoyage Marrakech, ménage Marrakech, nettoyage tapis Marrakech, nettoyage canapé Marrakech, nettoyage fin de chantier, désinsectisation Marrakech" />
+    <meta name="keywords" content="nettoyage Marrakech, société de nettoyage Marrakech, ménage Marrakech, nettoyage tapis Marrakech, nettoyage canapé Marrakech, nettoyage fin de chantier, désinsectisation Marrakech, cleaning company Marrakech, شركة تنظيف مراكش" />
     <link rel="canonical" href="https://propre360.com/" />
 
     <meta property="og:type" content="website" />
@@ -60,6 +60,20 @@
             document.documentElement.classList.add('light')
             document.documentElement.style.colorScheme = 'light'
           }
+        } catch (e) {}
+        try {
+          var langs = { fr: 'ltr', en: 'ltr', ar: 'rtl' }
+          var l = localStorage.getItem('propre360-lang')
+          if (!langs[l]) {
+            l = 'fr'
+            var nav = navigator.languages || [navigator.language || 'fr']
+            for (var i = 0; i < nav.length; i++) {
+              var c = String(nav[i]).slice(0, 2).toLowerCase()
+              if (langs[c]) { l = c; break }
+            }
+          }
+          document.documentElement.lang = l
+          document.documentElement.dir = langs[l]
         } catch (e) {}
       })()
     </script>

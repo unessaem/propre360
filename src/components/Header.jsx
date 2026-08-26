@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react'
 import { company } from '../data/company'
 import { generalQuote } from '../lib/whatsapp'
+import { useI18n } from '../i18n'
 import Icon from './Icons'
 import ThemeToggle from './ThemeToggle'
-
-const nav = [
-  { href: '#services', label: 'Services' },
-  { href: '#pourquoi', label: 'Pourquoi nous' },
-  { href: '#zone', label: 'Zone' },
-  { href: '#devis', label: 'Devis' },
-]
+import LanguageSwitcher from './LanguageSwitcher'
 
 export default function Header() {
+  const { t } = useI18n()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+
+  const nav = [
+    { href: '#services', label: t.nav.services },
+    { href: '#pourquoi', label: t.nav.why },
+    { href: '#zone', label: t.nav.zone },
+    { href: '#devis', label: t.nav.quote },
+  ]
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -43,9 +46,7 @@ export default function Header() {
             <span className="block font-display text-sm font-extrabold tracking-wide text-ink">
               {company.name}
             </span>
-            <span className="block text-[11px] text-brand">
-              Nettoyage {company.city}
-            </span>
+            <span className="block text-[11px] text-brand">{t.header.tagline}</span>
           </span>
         </a>
 
@@ -62,32 +63,41 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           <ThemeToggle />
           <a
             href={`tel:${company.phoneHref}`}
+            dir="ltr"
             className="hidden items-center gap-2 rounded-xl border border-edge/15 px-4 py-2.5 text-sm font-medium text-body transition hover:border-edge/30 hover:text-ink md:flex"
           >
             <Icon name="phone" className="h-4 w-4" />
             {company.phoneDisplay}
           </a>
           <a
-            href={generalQuote()}
+            href={generalQuote(t)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 px-4 py-2.5 text-sm font-semibold text-navy-950 shadow-glow transition hover:brightness-110"
           >
             <Icon name="whatsapp" className="h-4 w-4" />
-            <span className="hidden sm:inline">Devis gratuit</span>
-            <span className="sm:hidden">Devis</span>
+            <span className="hidden sm:inline">{t.header.quote}</span>
+            <span className="sm:hidden">{t.header.quoteShort}</span>
           </a>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            aria-label="Ouvrir le menu"
+            aria-label={t.header.openMenu}
             aria-expanded={open}
             className="flex h-10 w-10 items-center justify-center rounded-lg border border-edge/15 text-ink lg:hidden"
           >
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+            <svg
+              viewBox="0 0 24 24"
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            >
               {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
             </svg>
           </button>
@@ -108,6 +118,7 @@ export default function Header() {
           ))}
           <a
             href={`tel:${company.phoneHref}`}
+            dir="ltr"
             className="mt-1 flex items-center gap-2 rounded-lg px-3 py-3 text-sm font-medium text-brand"
           >
             <Icon name="phone" className="h-4 w-4" />

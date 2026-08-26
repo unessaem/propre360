@@ -1,9 +1,11 @@
-import { company, audiences, socials } from '../data/company'
+import { company, socials } from '../data/company'
 import { services } from '../data/services'
 import { generalQuote } from '../lib/whatsapp'
+import { useI18n } from '../i18n'
 import Icon from './Icons'
 
 export default function Footer() {
+  const { t } = useI18n()
   const year = new Date().getFullYear()
 
   return (
@@ -23,19 +25,16 @@ export default function Footer() {
                 <span className="block font-display text-base font-extrabold text-ink">
                   {company.name}
                 </span>
-                <span className="block text-xs text-brand">
-                  {company.tagline}
-                </span>
+                <span className="block text-xs text-brand">{t.hero.title2}</span>
               </span>
             </div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted">
-              Nettoyage professionnel à {company.city} : {audiences.join(', ').toLowerCase()}.
-              Devis gratuit sur WhatsApp.
+              {t.footer.about}
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
               <a
-                href={generalQuote()}
+                href={generalQuote(t)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 px-5 py-3 text-sm font-bold text-navy-950 transition hover:brightness-110"
@@ -52,7 +51,7 @@ export default function Footer() {
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`${company.name} sur ${s.label}`}
+                  aria-label={`${company.name} ${t.footer.socialOn} ${s.label}`}
                   className="inline-flex items-center gap-2 rounded-xl border border-edge/15 px-4 py-2.5 text-sm font-medium text-body transition hover:border-brand/50 hover:text-brand"
                 >
                   <Icon name={s.icon} className="h-4 w-4" />
@@ -64,7 +63,7 @@ export default function Footer() {
 
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-faint">
-              Nos services
+              {t.footer.servicesTitle}
             </h3>
             <ul className="mt-5 space-y-2.5">
               {services.map((s) => (
@@ -73,7 +72,7 @@ export default function Footer() {
                     href="#services"
                     className="text-sm text-muted transition hover:text-brand"
                   >
-                    {s.title}
+                    {t.services.items[s.id].title}
                   </a>
                 </li>
               ))}
@@ -82,12 +81,13 @@ export default function Footer() {
 
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-faint">
-              Contact
+              {t.footer.contactTitle}
             </h3>
             <ul className="mt-5 space-y-4 text-sm">
               <li>
                 <a
                   href={`tel:${company.phoneHref}`}
+                  dir="ltr"
                   className="flex items-start gap-3 text-body transition hover:text-brand"
                 >
                   <Icon name="phone" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
@@ -96,11 +96,11 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-3 text-muted">
                 <Icon name="pin" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-                {company.area}
+                {t.zone.title}
               </li>
               <li className="flex items-start gap-3 text-muted">
                 <Icon name="clock" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-                Lundi – Samedi, sur rendez-vous
+                {t.footer.hours}
               </li>
             </ul>
           </div>
@@ -108,9 +108,9 @@ export default function Footer() {
 
         <div className="mt-14 flex flex-col gap-3 border-t border-edge/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-faint">
-            © {year} {company.name} — {company.website}. Tous droits réservés.
+            © {year} {company.name} — {company.website}. {t.footer.rights}
           </p>
-          <p className="text-xs text-faint">{company.tagline}</p>
+          <p className="text-xs text-faint">{t.hero.title1} {t.hero.title2}</p>
         </div>
       </div>
     </footer>

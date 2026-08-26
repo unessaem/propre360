@@ -15,7 +15,6 @@ dès que le fichier existe, la photo remplace l'emplacement gris.
   canapes-matelas.jpg       → Nettoyage canapés & matelas
   tapis.jpg                 → Lavage professionnel de tapis
   cuivre-inox.jpg           → Traitement cuivre, inox & aluminium
-  lavage-voiture.jpg        → Lavage professionnel de voitures
   nuisibles.jpg             → Lutte contre insectes & nuisibles
 
 ────────────────────────────────────────────────────────────────

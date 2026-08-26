@@ -1,3 +1,4 @@
+import { I18nProvider } from './i18n'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import Services from './components/Services'
@@ -11,19 +12,21 @@ import WhatsAppFloat from './components/WhatsAppFloat'
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-page font-sans text-body antialiased">
-      <Header />
-      <main>
-        <Hero />
-        <Services />
-        <WhyUs />
-        <Process />
-        <Zone />
-        <QuoteForm />
-        <Faq />
-      </main>
-      <Footer />
-      <WhatsAppFloat />
-    </div>
+    <I18nProvider>
+      <div className="min-h-screen bg-page font-sans text-body antialiased">
+        <Header />
+        <main>
+          <Hero />
+          <Services />
+          <WhyUs />
+          <Process />
+          <Zone />
+          <QuoteForm />
+          <Faq />
+        </main>
+        <Footer />
+        <WhatsAppFloat />
+      </div>
+    </I18nProvider>
   )
 }

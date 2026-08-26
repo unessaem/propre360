@@ -5,35 +5,32 @@ export function waLink(message) {
   return `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(message)}`
 }
 
-/** Message court utilisé par les boutons de chaque service. */
-export function quickQuote(serviceTitle) {
-  return waLink(
-    `Bonjour ${company.name}, je souhaite un devis gratuit pour : ${serviceTitle}. Merci !`
-  )
+/** Message court des boutons de chaque service, dans la langue affichée. */
+export function quickQuote(t, serviceTitle) {
+  return waLink(t.wa.quick(serviceTitle))
 }
 
 /** Message générique (héro, en-tête, bouton flottant). */
-export function generalQuote() {
-  return waLink(
-    `Bonjour ${company.name}, je souhaite obtenir un devis gratuit pour un service de nettoyage à ${company.city}.`
-  )
+export function generalQuote(t) {
+  return waLink(t.wa.general)
 }
 
 /** Message détaillé construit à partir du formulaire de devis. */
-export function detailedQuote(form) {
+export function detailedQuote(t, form) {
+  const d = t.wa.detailed
   const lines = [
-    `Bonjour ${company.name}, je souhaite un devis gratuit.`,
+    d.intro,
     '',
-    `• Service : ${form.service || 'À définir'}`,
-    `• Type de lieu : ${form.placeType || 'Non précisé'}`,
-    `• Surface / pièces : ${form.size || 'Non précisé'}`,
-    `• Quartier : ${form.area || 'Non précisé'}`,
-    `• Date souhaitée : ${form.date || 'À convenir'}`,
-    `• Nom : ${form.name || 'Non précisé'}`,
+    `• ${d.service} : ${form.service || d.toDefine}`,
+    `• ${d.placeType} : ${form.placeType || d.empty}`,
+    `• ${d.size} : ${form.size || d.empty}`,
+    `• ${d.area} : ${form.area || d.empty}`,
+    `• ${d.date} : ${form.date || d.toAgree}`,
+    `• ${d.name} : ${form.name || d.empty}`,
   ]
   if (form.details?.trim()) {
-    lines.push('', `Précisions : ${form.details.trim()}`)
+    lines.push('', `${d.details} : ${form.details.trim()}`)
   }
-  lines.push('', 'Merci !')
+  lines.push('', d.thanks)
   return waLink(lines.join('\n'))
 }

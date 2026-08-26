@@ -55,7 +55,6 @@ Déposez vos images dans **`public/images/services/`** avec exactement ces noms 
 | `canapes-matelas.jpg` | Nettoyage canapés & matelas |
 | `tapis.jpg` | Lavage professionnel de tapis |
 | `cuivre-inox.jpg` | Traitement cuivre, inox & aluminium |
-| `lavage-voiture.jpg` | Lavage professionnel de voitures |
 | `nuisibles.jpg` | Lutte contre insectes & nuisibles |
 
 **Aucune modification de code n'est nécessaire.** Tant qu'un fichier est absent,
@@ -78,10 +77,11 @@ du service dans `src/data/services.js`.
 | Réseaux sociaux (Instagram, Facebook, LinkedIn) | `src/data/company.js` → tableau `socials` |
 | Couleurs des thèmes clair et sombre | `src/index.css` → blocs `:root` et `:root.light` |
 | Quartiers de la zone d'intervention | `src/data/company.js` |
-| Les 10 services (titres, descriptions, puces) | `src/data/services.js` |
-| Arguments « Pourquoi PROPRE 360 » | `src/components/WhyUs.jsx` |
-| Questions / réponses FAQ | `src/components/Faq.jsx` |
-| Champs du formulaire de devis | `src/components/QuoteForm.jsx` |
+| Textes des 9 services (titres, descriptions, puces) | `src/i18n/fr.js`, `en.js`, `ar.js` → `services.items` |
+| Liste et images des services | `src/data/services.js` |
+| Arguments « Pourquoi PROPRE 360 » | `src/i18n/*.js` → `why.items` |
+| Questions / réponses FAQ | `src/i18n/*.js` → `faq.items` |
+| Libellés du formulaire de devis | `src/i18n/*.js` → `quote` |
 | Couleurs de la charte | `tailwind.config.js` |
 
 > Le numéro WhatsApp est au format international **sans `+` ni espaces**
@@ -117,7 +117,43 @@ titres 17:1, texte courant 10:1, accent 5:1 — au-delà du seuil WCAG AA.
 
 ---
 
-## 6. Comment fonctionne la demande de devis
+## 6. Multilingue — français, anglais, arabe
+
+Le sélecteur de langue (icône globe) est dans l'en-tête.
+
+- Au premier passage, le site détecte **la langue du navigateur** du visiteur.
+- Dès qu'il choisit, son choix est mémorisé (`localStorage`).
+- Comme pour le thème, la langue et la direction du texte sont appliquées
+  **avant le premier affichage**, via le script de `index.html`.
+
+**Tous les textes du site sont dans `src/i18n/`** — trois fichiers de même
+structure. Pour corriger une phrase, modifiez la ligne correspondante dans les
+trois fichiers. Aucun texte n'est écrit en dur dans les composants.
+
+### L'arabe et l'écriture de droite à gauche
+
+L'arabe ne se contente pas d'une traduction, il inverse toute la mise en page.
+Trois choses ont été traitées :
+
+- **Direction** : `dir="rtl"` sur `<html>`, et les composants utilisent des
+  classes logiques (`start-*`, `end-*`, `ps-*`, `pe-*`, `text-start`) qui se
+  retournent automatiquement. La flèche du bouton « nos services » est mise en
+  miroir par la classe `flip-rtl`.
+- **Typographie** : la police **Cairo** remplace Inter en arabe. Les majuscules
+  et l'interlettrage sont neutralisés — l'arabe n'a pas de majuscules, et
+  l'espacement des lettres casse les ligatures.
+- **Ce qui ne doit PAS s'inverser** : le numéro de téléphone, le champ date et
+  les noms de fichiers portent `dir="ltr"` pour rester lisibles.
+
+### Ajouter une quatrième langue
+
+1. Copiez `src/i18n/fr.js` en `es.js` et traduisez les valeurs.
+2. Dans `src/i18n/index.jsx`, importez-le et ajoutez-le à `languages`.
+3. Ajoutez son code dans le script de `index.html` (objet `langs`).
+
+---
+
+## 7. Comment fonctionne la demande de devis
 
 Aucun serveur, aucune base de données, aucune donnée stockée.
 
@@ -130,22 +166,25 @@ Dans les deux cas le client voit le message avant de l'envoyer.
 
 ---
 
-## 7. Structure
+## 8. Structure
 
 ```
 public/
   logo-propre360.png          logo officiel PROPRE 360
   images/services/            ← vos photos ici
 src/
-  data/company.js             coordonnées et zone
-  data/services.js            les 10 services
+  data/company.js             coordonnées et réseaux sociaux
+  data/services.js            les 9 services (structure)
   lib/whatsapp.js             construction des liens wa.me
   lib/theme.js                mémorisation du thème clair / sombre
+  i18n/fr.js en.js ar.js      TOUS les textes du site
+  i18n/index.jsx              contexte de langue, direction, mémorisation
   components/                 sections de la page
   components/ThemeToggle.jsx  bouton jour / nuit
+  components/LanguageSwitcher.jsx  sélecteur FR / EN / ع
 ```
 
-## 8. Référencement
+## 9. Référencement
 
 Le `<title>`, la meta description et les données structurées `LocalBusiness`
 sont dans `index.html`. Pensez à y remplacer `https://propre360.com/` si le

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useI18n } from '../i18n'
 import Icon from './Icons'
 
 /**
@@ -16,6 +17,7 @@ export default function ImageSlot({
   className = '',
   ratio = 'aspect-[3/2]',
 }) {
+  const { t } = useI18n()
   const [failed, setFailed] = useState(false)
   const fileName = src?.split('/').pop()
 
@@ -38,7 +40,7 @@ export default function ImageSlot({
     <div
       className={`relative flex flex-col items-center justify-center overflow-hidden ${ratio} ${className}`}
       role="img"
-      aria-label={`Emplacement photo : ${alt}`}
+      aria-label={`${t.slot.aria} : ${alt}`}
     >
       <div className="photo-slot absolute inset-0" />
       <div className="photo-slot-hatch absolute inset-0 opacity-[0.35]" />
@@ -47,10 +49,10 @@ export default function ImageSlot({
           <Icon name={icon} className="h-6 w-6" />
         </span>
         <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand/90">
-          Emplacement photo
+          {t.slot.label}
         </span>
         {fileName && (
-          <code className="rounded bg-page/70 px-2 py-1 text-[10px] text-muted">
+          <code dir="ltr" className="rounded bg-page/70 px-2 py-1 text-[10px] text-muted">
             {fileName}
           </code>
         )}
