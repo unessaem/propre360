@@ -27,9 +27,13 @@ export default function Process() {
               key={s.title}
               className="relative rounded-2xl border border-edge/10 bg-card p-7"
             >
-              <span className="absolute end-6 top-5 font-display text-5xl font-extrabold text-ink/[0.06]">
-                {num(i)}
-              </span>
+              {/* Filigrane purement décoratif : rendu via CSS, donc jamais
+                  lu par un lecteur d'écran ni traité comme du texte. */}
+              <span
+                aria-hidden="true"
+                data-step={num(i)}
+                className="step-watermark absolute end-6 top-5 font-display text-5xl font-extrabold"
+              />
               <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 text-navy-950">
                 <Icon name={icons[i]} className="h-6 w-6" />
               </span>

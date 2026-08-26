@@ -10,9 +10,9 @@ import Faq from './components/Faq'
 import Footer from './components/Footer'
 import WhatsAppFloat from './components/WhatsAppFloat'
 
-export default function App() {
+export default function App({ lang }) {
   return (
-    <I18nProvider>
+    <I18nProvider lang={lang}>
       <div className="min-h-screen bg-page font-sans text-body antialiased">
         <Header />
         <main>

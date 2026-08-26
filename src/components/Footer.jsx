@@ -3,6 +3,7 @@ import { services } from '../data/services'
 import { generalQuote } from '../lib/whatsapp'
 import { useI18n } from '../i18n'
 import Icon from './Icons'
+import Logo from './Logo'
 
 export default function Footer() {
   const { t } = useI18n()
@@ -15,11 +16,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-3">
               <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-white p-1.5">
-                <img
-                  src="/logo-propre360.png"
-                  alt={`${company.name} logo`}
-                  className="h-full w-full object-contain"
-                />
+                <Logo />
               </span>
               <span>
                 <span className="block font-display text-base font-extrabold text-ink">

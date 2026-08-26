@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&family=Cairo:wght@400;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -48,8 +46,8 @@
     --c-ink: 10 21 46;
     --c-body: 45 62 88;
     --c-muted: 84 101 126;
-    --c-faint: 113 128 154;
-    --c-brand: 13 118 140; /* turquoise assombri pour le contraste */
+    --c-faint: 97 110 133;
+    --c-brand: 11 100 118; /* turquoise assombri : lisible sur fond blanc ET sur la pastille turquoise pâle */
     --c-glow-a: 62 201 221;
     --c-glow-b: 173 199 236;
     --c-grad-end: 23 132 156; /* turquoise profond */
@@ -90,6 +88,12 @@
 }
 
 @layer components {
+  /* Numéro d'étape en filigrane : décor, pas du contenu. */
+  .step-watermark::before {
+    content: attr(data-step);
+    color: rgb(var(--c-ink) / 0.06);
+  }
+
   /* Fond des emplacements photo, dans les deux thèmes */
   .photo-slot {
     background-color: rgb(var(--slot-base));

@@ -1,4 +1,4 @@
-import { company } from '../data/company'
+
 import { generalQuote } from '../lib/whatsapp'
 import { useI18n } from '../i18n'
 import Icon from './Icons'
@@ -40,7 +40,9 @@ export default function Hero() {
             </span>
           </h1>
 
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-body">{t.hero.lead}</p>
+          <p className="mt-5 font-display text-lg font-bold text-brand">{t.hero.tagline}</p>
+
+          <p className="mt-3 max-w-xl text-lg leading-relaxed text-body">{t.hero.lead}</p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <a
@@ -80,6 +82,7 @@ export default function Hero() {
               src="/images/services/hero.jpg"
               alt={t.hero.heroAlt}
               icon="team"
+              priority
               ratio="aspect-[4/5] sm:aspect-[4/3] lg:aspect-[4/5]"
             />
           </div>

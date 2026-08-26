@@ -4,6 +4,15 @@ export default {
   short: 'FR',
   dir: 'ltr',
 
+  seo: {
+    title: 'Société de nettoyage à Marrakech | PROPRE 360 — Devis gratuit',
+    description:
+      'Société de nettoyage professionnel à Marrakech : ménage à domicile, nettoyage de canapé, tapis et matelas, vitres, sols, fin de chantier et désinsectisation. Villas, riads, appartements, bureaux et commerces. Devis gratuit sur WhatsApp.',
+    ogLocale: 'fr_MA',
+    keywords:
+      'société de nettoyage Marrakech, nettoyage Marrakech, ménage à domicile Marrakech, nettoyage canapé Marrakech, nettoyage tapis Marrakech, lavage tapis Marrakech, nettoyage matelas Marrakech, nettoyage vitres Marrakech, nettoyage fin de chantier Marrakech, nettoyage après travaux Marrakech, désinsectisation Marrakech, dératisation Marrakech, hygiène 3D Marrakech, nettoyage villa Marrakech, nettoyage riad Marrakech, nettoyage bureau Marrakech, entreprise de nettoyage Marrakech',
+  },
+
   nav: {
     services: 'Services',
     why: 'Pourquoi nous',
@@ -23,8 +32,9 @@ export default {
 
   hero: {
     badge: 'Marrakech & environs',
-    title1: 'Propreté complète,',
-    title2: '360° pour vous.',
+    title1: 'Nettoyage professionnel',
+    tagline: 'Propreté complète, 360° pour vous.',
+    title2: 'à Marrakech',
     lead: 'Nettoyage professionnel à Marrakech pour maisons, riads, bureaux et commerces. Équipe formée, matériel professionnel, résultat impeccable — et un devis gratuit en quelques minutes sur WhatsApp.',
     ctaQuote: 'Demander un devis gratuit',
     ctaServices: 'Voir nos 9 services',

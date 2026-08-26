@@ -3,6 +3,7 @@ import { company } from '../data/company'
 import { generalQuote } from '../lib/whatsapp'
 import { useI18n } from '../i18n'
 import Icon from './Icons'
+import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
 import LanguageSwitcher from './LanguageSwitcher'
 
@@ -36,11 +37,7 @@ export default function Header() {
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 lg:px-8">
         <a href="#top" className="flex items-center gap-3">
           <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white p-1.5 shadow-glow">
-            <img
-              src="/logo-propre360.png"
-              alt={`${company.name} logo`}
-              className="h-full w-full object-contain"
-            />
+            <Logo />
           </span>
           <span className="hidden leading-tight sm:block">
             <span className="block font-display text-sm font-extrabold tracking-wide text-ink">

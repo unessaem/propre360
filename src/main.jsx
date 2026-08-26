@@ -1,10 +1,23 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import App from './App'
+import './fonts'
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-)
+const root = document.getElementById('root')
+
+// Le HTML est pré-généré au build : on hydrate au lieu de tout reconstruire.
+if (root.hasChildNodes()) {
+  hydrateRoot(
+    root,
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  )
+} else {
+  createRoot(root).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  )
+}

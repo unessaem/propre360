@@ -1,14 +1,22 @@
 import { useEffect, useState } from 'react'
 import { applyTheme, readStoredTheme, storeTheme, systemTheme } from '../lib/theme'
+import { useI18n } from '../i18n'
 
 export default function ThemeToggle({ className = '' }) {
-  const [theme, setTheme] = useState(
-    () => readStoredTheme() ?? systemTheme()
-  )
+  const { t } = useI18n()
+  // Le HTML est pré-généré côté serveur : on part toujours de « dark » pour
+  // que le premier rendu client soit identique, puis on lit le vrai réglage.
+  const [theme, setTheme] = useState('dark')
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    applyTheme(theme)
-  }, [theme])
+    setTheme(readStoredTheme() ?? systemTheme())
+    setReady(true)
+  }, [])
+
+  useEffect(() => {
+    if (ready) applyTheme(theme)
+  }, [theme, ready])
 
   // Tant que le visiteur n'a pas choisi, on suit les réglages de son appareil.
   useEffect(() => {
@@ -33,14 +41,10 @@ export default function ThemeToggle({ className = '' }) {
       onClick={toggle}
       role="switch"
       aria-checked={isLight}
-      aria-label={isLight ? 'Passer en mode nuit' : 'Passer en mode jour'}
-      title={isLight ? 'Mode nuit' : 'Mode jour'}
+      aria-label={isLight ? t.header.toDark : t.header.toLight}
+      title={isLight ? t.header.toDark : t.header.toLight}
       className={`relative flex h-10 w-10 items-center justify-center rounded-lg border border-edge/15 text-body transition hover:border-edge/35 hover:text-brand focus:outline-none focus-visible:ring-2 focus-visible:ring-brand ${className}`}
     >
-      <span className="sr-only">
-        {isLight ? 'Activer le mode nuit' : 'Activer le mode jour'}
-      </span>
-
       {/* Soleil et lune se croisent : l'un sort pendant que l'autre entre. */}
       <svg
         viewBox="0 0 24 24"

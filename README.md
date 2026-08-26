@@ -28,6 +28,11 @@ autorisé) :
 | Build command | `npm run build` |
 | Build output directory | `dist` |
 | Variable d'environnement | `NODE_VERSION = 22` (obligatoire : Vite 8 exige Node 20.19+) |
+| Variable d'environnement | `SITE_URL = https://propre360.com` (URL canoniques et sitemap) |
+
+Le build enchaîne quatre étapes : optimisation des photos, compilation,
+rendu serveur, puis génération des trois pages HTML (`/`, `/en/`, `/ar/`)
+avec leur sitemap et leur robots.txt.
 
 ⚠️ N'utilisez pas le plan gratuit de Vercel : il est réservé à un usage non
 commercial, ce qui exclut un site d'entreprise.
@@ -182,11 +187,138 @@ src/
   components/                 sections de la page
   components/ThemeToggle.jsx  bouton jour / nuit
   components/LanguageSwitcher.jsx  sélecteur FR / EN / ع
+  components/ImageSlot.jsx    images responsives + emplacements vides
+  fonts.js                    polices auto-hébergées
+  entry-server.jsx            point d'entrée du pré-rendu
+scripts/
+  images.js                   génère les variantes WebP / JPEG
+  prerender.js                génère les 3 pages HTML, sitemap et robots
 ```
 
-## 9. Référencement
+## 9. Référencement (SEO)
 
-Le `<title>`, la meta description et les données structurées `LocalBusiness`
-sont dans `index.html`. Pensez à y remplacer `https://propre360.com/` si le
-domaine final est différent, et ajoutez le site à Google Business Profile pour
-apparaître dans les recherches locales à Marrakech.
+### Le domaine final
+
+Le SEO est calculé au build à partir de `SITE_URL`. **Tant que cette variable
+n'est pas définie, toutes les URL canoniques pointent vers `propre360.com`.**
+Sur Cloudflare Pages, ajoutez la variable d'environnement :
+
+```
+SITE_URL = https://propre360.com
+```
+
+### Une URL par langue
+
+Le site génère trois pages indexables séparément :
+
+| URL | Langue | Balise `<title>` |
+|---|---|---|
+| `/` | Français | Société de nettoyage à Marrakech \| PROPRE 360 — Devis gratuit |
+| `/en/` | Anglais | Cleaning Company in Marrakech \| PROPRE 360 — Free Quote |
+| `/ar/` | Arabe | شركة تنظيف بمراكش \| PROPRE 360 — عرض سعر مجاني |
+
+Chacune porte son `canonical`, ses liens `hreflang` croisés et un
+`x-default` vers le français. C'est indispensable : sans ça, Google
+considérerait les trois versions comme du contenu dupliqué.
+
+### Ce qui est généré automatiquement
+
+- `sitemap.xml` avec les trois URL et leurs alternances de langue
+- `robots.txt` pointant vers le sitemap
+- Données structurées `HouseholdCleaningService` : téléphone, horaires,
+  coordonnées GPS de Marrakech, les 9 services, les 12 quartiers desservis,
+  et les liens Instagram / Facebook / LinkedIn
+- Données structurées `FAQPage` : les 6 questions peuvent apparaître
+  directement dépliées dans les résultats Google
+
+### Les mots-clés visés
+
+Le `<h1>` est passé de « Propreté complète, 360° pour vous » à
+**« Nettoyage professionnel à Marrakech »**. Le slogan reste juste en dessous.
+Un slogan de marque ne se recherche pas ; « nettoyage Marrakech », si.
+
+Mots-clés principaux, repris dans le titre, la description et le contenu :
+
+| Requête | Où elle est couverte |
+|---|---|
+| société de nettoyage Marrakech | `<title>`, H1, description |
+| nettoyage canapé / matelas Marrakech | carte service + FAQ |
+| nettoyage tapis / lavage tapis Marrakech | carte service |
+| ménage à domicile Marrakech | carte « nettoyage régulier » |
+| nettoyage fin de chantier / après travaux Marrakech | carte service |
+| désinsectisation / dératisation Marrakech | carte « nuisibles » |
+| nettoyage vitres Marrakech | carte service |
+| nettoyage villa / riad / bureau Marrakech | bandeau « nous intervenons pour » |
+| quartiers (Guéliz, Hivernage, Palmeraie…) | section Zone + `areaServed` |
+
+### Ce qui reste à faire hors du site
+
+Le code ne fait que la moitié du travail. Pour le référencement local :
+
+1. **Google Business Profile** — c'est le levier n°1 à Marrakech. Sans fiche,
+   vous n'apparaissez pas dans le bloc carte, qui capte l'essentiel des clics.
+2. **Annuaires marocains** — Telecontact (pages jaunes), avec le même nom,
+   la même adresse et le même téléphone que sur le site, au caractère près.
+3. **Avis clients** — le nombre et la fraîcheur des avis Google pèsent plus
+   que n'importe quelle optimisation technique dans les résultats locaux.
+
+### Une remarque honnête sur l'arabe
+
+La recherche montre que les requêtes en arabe pour Marrakech sont largement
+dominées par des sites du Golfe : le volume local est faible, les Marocains
+cherchent ce type de service en français. La version arabe est excellente
+pour le confort de vos visiteurs, mais **n'en attendez pas de trafic Google**.
+Concentrez vos efforts SEO sur le français.
+
+---
+
+## 10. Performance
+
+Mesures Lighthouse, mobile, avec compression serveur :
+
+| Indicateur | Avant | Après |
+|---|---|---|
+| Score performance | 78 | **94** |
+| Accessibilité | — | **100** |
+| Bonnes pratiques | — | **100** |
+| SEO | — | **100** |
+| First Contentful Paint | 2,6 s | **1,9 s** |
+| Largest Contentful Paint | 4,4 s | **2,9 s** |
+| Total Blocking Time | 110 ms | **30 ms** |
+| Speed Index | 4,2 s | **1,9 s** |
+
+### Ce qui a été corrigé, par ordre d'impact
+
+**1. Le HTML était vide.** Le navigateur recevait `<div id="root"></div>` et
+devait télécharger puis exécuter React avant d'afficher le moindre mot. Le
+site est maintenant **pré-généré au build** (`scripts/prerender.js`) : le HTML
+livré contient déjà tout le texte. React ne fait plus que « réveiller » la
+page. Google, lui, voit désormais 8 000 caractères de contenu au lieu d'une
+page blanche.
+
+**2. Le logo pesait 283 Ko** pour être affiché en 44 pixels. Redimensionné en
+256 px et converti en WebP : **7 Ko**, soit 40 fois moins.
+
+**3. Les polices venaient de Google Fonts**, ce qui imposait deux connexions
+externes bloquantes avant le premier affichage. Elles sont maintenant
+**auto-hébergées** (`src/fonts.js`), découpées par alphabet — la police arabe
+n'est téléchargée que sur `/ar/` — et les deux polices du premier écran sont
+préchargées.
+
+**4. Les images n'avaient qu'une seule taille.** `npm run images` génère
+maintenant 5 largeurs en WebP et JPEG ; un mobile télécharge 79 Ko au lieu
+de 273 Ko. L'image du héro est préchargée en priorité haute.
+
+### En ajoutant vos photos
+
+```bash
+npm run images     # génère les variantes optimisées
+```
+
+C'est déjà inclus dans `npm run build`, donc Cloudflare le fait tout seul à
+chaque déploiement. Le dossier `public/images/services/opt/` est régénéré
+automatiquement : ne le modifiez pas à la main.
+
+> Une image n'apparaît sur le site que si `npm run images` a tourné après son
+> ajout. C'est volontaire : le site ne demande jamais un fichier qui n'existe
+> pas, ce qui évite les erreurs 404.

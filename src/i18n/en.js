@@ -4,6 +4,15 @@ export default {
   short: 'EN',
   dir: 'ltr',
 
+  seo: {
+    title: 'Cleaning Company in Marrakech | PROPRE 360 — Free Quote',
+    description:
+      'Professional cleaning company in Marrakech: home cleaning, sofa, rug and mattress cleaning, windows, floors, post-construction cleaning and pest control. Villas, riads, apartments, offices and shops. Free quote on WhatsApp.',
+    ogLocale: 'en_MA',
+    keywords:
+      'cleaning company Marrakech, cleaning services Marrakech, house cleaning Marrakech, sofa cleaning Marrakech, rug cleaning Marrakech, mattress cleaning Marrakech, window cleaning Marrakech, post construction cleaning Marrakech, pest control Marrakech, villa cleaning Marrakech, riad cleaning Marrakech, office cleaning Marrakech',
+  },
+
   nav: {
     services: 'Services',
     why: 'Why us',
@@ -23,8 +32,9 @@ export default {
 
   hero: {
     badge: 'Marrakech & surroundings',
-    title1: 'Complete cleanliness,',
-    title2: '360° for you.',
+    title1: 'Professional cleaning',
+    tagline: 'Complete cleanliness, 360° for you.',
+    title2: 'in Marrakech',
     lead: 'Professional cleaning in Marrakech for homes, riads, offices and shops. Trained team, professional equipment, flawless results — and a free quote in minutes on WhatsApp.',
     ctaQuote: 'Get a free quote',
     ctaServices: 'See our 9 services',

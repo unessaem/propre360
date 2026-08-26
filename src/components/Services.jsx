@@ -23,7 +23,7 @@ function ServiceCard({ service, copy, cta, t }) {
             <h3 className="font-display text-lg font-bold leading-snug text-ink">
               {copy.title}
             </h3>
-            <p className="mt-1 text-sm text-brand/90">{copy.short}</p>
+            <p className="mt-1 text-sm text-brand">{copy.short}</p>
           </div>
         </div>
 
