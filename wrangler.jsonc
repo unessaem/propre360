@@ -2,14 +2,22 @@
   // Configuration Cloudflare Workers.
   //
   // Ce fichier doit exister : sans lui, `wrangler deploy` lance une
-  // auto-configuration qui installe son propre plugin Vite et modifie la
-  // sortie du build — ce qui casse l'étape de pré-rendu.
+  // auto-configuration qui installe son propre plugin Vite, déplace la sortie
+  // du build et fait échouer l'étape de pré-rendu.
   //
   // Le site est 100 % statique : aucun code serveur, uniquement les fichiers
   // du dossier dist/ servis par le réseau Cloudflare.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "propre360",
   "compatibility_date": "2026-08-25",
+
+  // Construit le site avant le déploiement.
+  // Sans cette ligne, `wrangler deploy` ne trouverait pas le dossier dist/,
+  // puisque plus rien ne le génère une fois l'auto-configuration désactivée.
+  "build": {
+    "command": "npm run build"
+  },
+
   "assets": {
     "directory": "./dist",
     // Chaque langue est une vraie page (/, /en/, /ar/) : on ne veut PAS le
@@ -17,6 +25,7 @@
     // adresse inconnue et brouillerait l'indexation Google.
     "not_found_handling": "404-page"
   },
+
   "observability": {
     "enabled": true
   }

@@ -47,6 +47,25 @@ Error [ERR_MODULE_NOT_FOUND]: Cannot find module '.../dist-ssr/entry-server.js'
 Ne le supprimez pas. Si vous renommez le projet Cloudflare, mettez à jour le
 champ `name` en conséquence.
 
+Il contient aussi la ligne qui déclenche la compilation :
+
+```jsonc
+"build": { "command": "npm run build" }
+```
+
+Sans elle, `wrangler deploy` échouerait avec :
+
+```
+The directory specified by the "assets.directory" field does not exist: /opt/buildhome/repo/dist
+```
+
+C'est logique : une fois l'auto-configuration désactivée, plus rien ne
+générait le dossier `dist/`.
+
+**Solution de repli** si cette ligne ne suffisait pas : dans le tableau de
+bord Cloudflare, remplacez la commande de déploiement `npx wrangler deploy`
+par `npm run build && npx wrangler deploy`.
+
 > `not_found_handling` est volontairement réglé sur `404-page` et non sur
 > `single-page-application` : le site a de vraies pages séparées par langue,
 > pas une application monopage.
